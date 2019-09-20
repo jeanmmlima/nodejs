@@ -8,11 +8,12 @@ const utf8 = require('utf8');
 
 //criando rotas
 app.get("/",function(req,res){
-  res.send("Seja bem-vindo ao meu app");
+  //res.send("Seja bem-vindo ao meu app!");
+  res.sendFile(__dirname + "/html/index.html");
 });
 
 app.get("/sobre",function(req,res){
-  res.send("Minha página sobre!");
+  res.sendFile(__dirname + "/html/sobre.html");
 });
 
 app.get("/blog",function(req,res){
@@ -27,8 +28,6 @@ app.get("/ola/:cargo/:nome/:titulo", function(req,res){
   res.send("<h1>Olá "+req.params.nome+"</h1>" +
   "<h2>Seu cargo é: "+req.params.cargo+"</h2>" +
   "<h3>Seu título é: "+req.params.titulo+"</h3>");
-//  res.send("<h2> Seu cargo e: "+req.params.cargo+"</h2>");
-//  res.send("<h3> Seu título e:"+req.params.cargo+"</h3>");
 });
 
 //deve ser a última linha do codigo.
