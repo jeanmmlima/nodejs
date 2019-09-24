@@ -15,3 +15,49 @@ sequelize.authenticate().then(function(){
 }).catch(function(erro){
   console.log("Falha ao se conectar: "+erro)
 })
+
+//Model - Tabela
+//nome da tabela, {campos...}
+
+const Postagem = sequelize.define('postagens',{
+  titulo:{
+    //varchar
+    type: Sequelize.STRING
+  },
+  conteudo:{
+    //campo texto
+    type: Sequelize.TEXT
+  }
+})
+
+//Sincroniza o Model com o mysql - executa o model, no caso cria a tabela
+//Postagem.sync({force: true})
+//Postagem.create({
+//  titulo: "TITULO TESTE",
+//  conteudo: "blablqablablablalbalbalbalbalbalbalbalb"
+//})
+
+
+const Usuario = sequelize.define('usuarios',{
+  nome:{
+    type: Sequelize.STRING
+  },
+  sobrenome:{
+    type: Sequelize.STRING
+  },
+  idade: {
+    type: Sequelize.INTEGER
+  },
+  email:{
+    type: Sequelize.STRING
+  }
+})
+
+//Usuario.sync({force: true})
+
+Usuario.create({
+  nome: "Jean",
+  sobrenome: "Lima",
+  idade: 26,
+  email: "jean@mail.com"
+})
