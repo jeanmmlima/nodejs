@@ -38,6 +38,16 @@ app.get('/',function(req,res){
 
 })
 
+//deletar recebe id como parâmetro
+app.get('/deletar/:id', function(req, res){
+  //pega o parametro id que vem da rota atraves do req, e deleta
+  Post.destroy({where: {'id': req.params.id}}).then(function(){
+    res.send("Postagem deletada com sucesso!")
+  }).catch(function(erro){
+    res.send("Essa postagem não existe!")
+  })
+})
+
 // rota add recebe dados do form
 // caso for passe os dados via POST: app.post
 app.post('/add',function(req,res){
