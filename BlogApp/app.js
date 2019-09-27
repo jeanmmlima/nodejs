@@ -5,6 +5,9 @@ const bodyParsers = require('body-parser')
 const app = express()
 //require routes
 const admin = require('./routes/admin')
+
+//module path para trablhar com diretorios
+const path = require("path")
 //const mongoose = require('mongoose')
 
 //2. Settings
@@ -14,10 +17,14 @@ const admin = require('./routes/admin')
 
     //2.2 Handlebars
     app.engine('handlebars', handlebars({defaultLayout: 'main'}))
-    app.set('view engine', 'handlebars');
+    app.set('view engine', 'handlebars')
 
     //2.3 Mongoose
     //coming soon...
+
+    //2.4 Public files - arquivos estaticos em public
+    app.use(express.static(path.join(__dirname,"public")))
+    //app.use(express.static('public'))
 
 //3. Routes
     //Parâmetros: prefixo das rotas, constante definida
