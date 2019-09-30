@@ -8,7 +8,7 @@ const admin = require('./routes/admin')
 
 //module path para trablhar com diretorios
 const path = require("path")
-//const mongoose = require('mongoose')
+const mongoose = require('mongoose')
 
 //2. Settings
     //2.1 Body Parsers
@@ -21,6 +21,12 @@ const path = require("path")
 
     //2.3 Mongoose
     //coming soon...
+    mongoose.Promise = global.Promise;
+    mongoose.connect("mongodb://localhost/blogapp").then(() => {
+        console.log("Conectado ao mongo!")
+    }).catch((err) => {
+        console.log("Erro ao se conectar: "+err)
+    })
 
     //2.4 Public files - arquivos estaticos em public
     app.use(express.static(path.join(__dirname,"public")))
