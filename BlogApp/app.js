@@ -27,6 +27,7 @@ const flash = require("connect-flash")
     app.use((req,res,next) => {
         //possível guardar variaveis globias
         //res.locals.nome = "Meu nome"
+        //flash - sessao temporaria
         res.locals.success_msg = req.flash("success_msg")
         res.locals.error_msg = req.flash("error_msg")
         next()
