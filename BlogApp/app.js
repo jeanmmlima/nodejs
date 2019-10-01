@@ -10,7 +10,28 @@ const admin = require('./routes/admin')
 const path = require("path")
 const mongoose = require('mongoose')
 
+const session = require("express-session")
+const flash = require("connect-flash")
+
 //2. Settings
+    //2.0 Session
+    app.use(session({
+        secret: "cursodenode",
+        resave: true,
+        saveUninitialized: true
+
+    }))
+    app.use(flash())
+
+    //2.0.1 Middleware para trabalhar com sessoes
+    app.use((req,res,next) => {
+        //possível guardar variaveis globias
+        //res.locals.nome = "Meu nome"
+        res.locals.success_msg = req.flash("success_msg")
+        res.locals.error_msg = req.flash("error_msg")
+        next()
+    })
+
     //2.1 Body Parsers
     app.use(bodyParsers.urlencoded({extended: true}))
     app.use(bodyParsers.json())
@@ -31,6 +52,13 @@ const mongoose = require('mongoose')
     //2.4 Public files - arquivos estaticos em public
     app.use(express.static(path.join(__dirname,"public")))
     //app.use(express.static('public'))
+
+    //MIDDLEWARE
+    app.use((req,res,next) => {
+        console.log("OLA EU SOU UM MIDDLEWARE")
+        //passa a requisicao
+        next()
+    })
 
 //3. Routes
     //Parâmetros: prefixo das rotas, constante definida

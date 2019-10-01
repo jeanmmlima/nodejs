@@ -6,3 +6,5 @@ npm install --save utf8
 npm install --save express-handlebars
 npm install --save body-parsers
 npm install --save mangoose
+npm install --save express-session
+npm install --save connect-flash
