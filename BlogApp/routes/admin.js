@@ -92,6 +92,17 @@ router.post("/categorias/edit", (req,res) => {
     })
 })
 
+router.post("/categorias/deletar", (req,res) =>{
+    Categorias.remove({_id: req.body.id}).then(() => {
+        req.flash("success_msg", "Categoria deletada com sucesso!")
+        res.redirect("/admin/categorias")
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao deletar categoria")
+        res.redirect("/admin/categorias")
+    })
+
+})
+
 router.get('/categorias/add',(req,res) => {
     res.render("admin/addcategorias")
 })
