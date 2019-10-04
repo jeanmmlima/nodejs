@@ -3,7 +3,7 @@ const router = express.Router()
 const mongoose = require('mongoose')
 require("../models/Categoria")
 const Categorias = mongoose.model("categorias")
-require("../model/Postagens")
+require("../models/Postagens")
 const Postagens = mongoose.model("postagens")
 
 router.get('/',(req,res) =>{
@@ -111,7 +111,65 @@ router.get('/categorias/add',(req,res) => {
 
 
 router.get("/postagens",(req,res) => {
-    res.render("admin/postagens")
+    //categoria -> nome do campo na view de postagens
+    Postagens.find().populate("categoria").sort({data: "desc"}).then((postagens) => {
+        res.render("admin/postagens", {postagens: postagens})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao listar as postagens")
+        res.redirect("/admin")
+    })
+    
+})
+
+router.get("/postagens/edit/:id",(req,res) => {
+    Postagens.findOne({_id: req.params.id}).then((postagem) => {
+        Categorias.find().then((categorias) => {
+            res.render("admin/editpostagens", {categorias: categorias, postagem: postagem})
+        }).catch((err) => {
+            req.flash("error_msg", "Não conseguiu listar categorias")
+            res.redirect("/admin/postagens")
+        })
+        
+    }).catch((err) => {
+        req.flash("error_msg", "Esta postagem não existe")
+        res.redirect("/admin/postagens")
+    })
+    
+})
+
+router.post("/postagens/edit/", (req,res) => {
+
+     Postagens.findOne({_id: req.body.id}).then((postagem) => {
+
+        postagem.titulo = req.body.titulo
+        postagem.descricao = req.body.descricao
+        postagem.conteudo = req.body.conteudo
+        postagem.slug = req.body.slug
+        postagem.categoria = req.body.categoria
+
+        postagem.save().then(() => {
+            req.flash("success_msg", "Postagem editada com sucesso!")
+            res.redirect("/admin/postagens")
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro interno ao salvar a edição da postagem")
+            res.redirect("/admin/postagens")
+        })
+
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao editar postagem")
+        res.redirect("/admin/postagens")
+    })
+
+})
+
+router.get("/postagens/deletar/:id", (req,res) => {
+    Postagens.remove({_id: req.params.id}).then(() => {
+        req.flash("success_msg", "Postagem deletada com sucesso!")
+        res.redirect("admin/postagens")
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao deletar postagem")
+        res.redirect("/admin/postagens")
+    })
 })
 
 router.get("/postagens/add", (req,res) => {
@@ -136,7 +194,7 @@ router.post("/postagens/nova", (req,res) => {
     } else {
         const novaPostagem = {
             //name dos input texts
-            nome: req.body.nome,
+            titulo: req.body.titulo,
             slug: req.body.slug,
             descricao: req.body.descricao,
             conteudo: req.body.conteudo,
@@ -148,8 +206,8 @@ router.post("/postagens/nova", (req,res) => {
             res.redirect("/admin/postagens")
         }).catch((err) => {
             req.flash("error_msg", "Houve erro ao salvar a postagem. Tente novamente!")
-           // console.log("Erro ao inserir categoria: "+err)
-           res.redirect("/admin")
+            //console.log("Erro ao inserir dado: "+err)
+           res.redirect("/admin/postagens")
         })
     }
 
