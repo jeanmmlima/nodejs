@@ -8,3 +8,4 @@ npm install --save body-parsers
 npm install --save mangoose
 npm install --save express-session
 npm install --save connect-flash
+npm install --save bcryptjs

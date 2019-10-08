@@ -5,6 +5,7 @@ const bodyParsers = require('body-parser')
 const app = express()
 //require routes
 const admin = require('./routes/admin')
+const usuarios = require('./routes/usuario')
 
 //module path para trablhar com diretorios
 const path = require("path")
@@ -132,6 +133,7 @@ const Categoria = mongoose.model("categorias")
         })
     })
 
+    app.use("/usuarios", usuarios)
 
 //4. Others
 const PORT = 8081
