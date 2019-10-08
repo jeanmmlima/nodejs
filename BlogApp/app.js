@@ -13,6 +13,9 @@ const mongoose = require('mongoose')
 const session = require("express-session")
 const flash = require("connect-flash")
 
+require("./models/Postagens")
+const Postagem = mongoose.model("postagens")
+
 //2. Settings
     //2.0 Session
     app.use(session({
@@ -67,7 +70,17 @@ const flash = require("connect-flash")
     //grupo de rotas admin com prefixo admin => http://localhost:8081/admin/nomeDarota
 
     app.get('/',(req,res) => {
-        res.send("Rota Principal")
+        Postagem.find().populate("categoria").sort({data: "desc"}).then((postagens) =>{
+            res.render("index", {postagens: postagens})
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro interno!")
+            res.redirect("/404")
+        })
+
+    })
+
+    app.get("/404", (req,res) => {
+        res.send('Erro 404!')
     })
 
     app.get('/posts', (req,res) => {
