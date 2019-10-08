@@ -16,6 +16,9 @@ const flash = require("connect-flash")
 require("./models/Postagens")
 const Postagem = mongoose.model("postagens")
 
+require("./models/Categoria")
+const Categoria = mongoose.model("categorias")
+
 //2. Settings
     //2.0 Session
     app.use(session({
@@ -101,6 +104,33 @@ const Postagem = mongoose.model("postagens")
         res.send("Lista de Posts")
     })
 
+    app.get("/categorias", (req,res) => {
+        Categoria.find().then((categorias) => {
+            res.render("categorias/index", {categorias: categorias})
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro interno ao listar categorias!")
+            res.redirect("/")
+        })
+    })
+
+    app.get("/categorias/:slug", (req,res) => {
+        Categoria.findOne({slug: req.params.slug}).then((categoria) => {
+            if(categoria){
+                Postagem.find({categoria: categoria._id}).then((postagens) => {
+                    res.render("categorias/postagens", {postagens: postagens, categoria: categoria})
+                }).catch((err) => {
+                    req.flash("error_msg", "Houve erro ao listar posts")
+                    res.redirect("/")
+                })
+            } else {
+                req.flash("error_msg", "Categoria não existe")
+                res.redirect("/")
+            }
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro interno ao carregar categoria!")
+            res.redirect("/")
+        })
+    })
 
 
 //4. Others
