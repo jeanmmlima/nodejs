@@ -24,6 +24,8 @@ const Postagem = mongoose.model("postagens")
 require("./models/Categoria")
 const Categoria = mongoose.model("categorias")
 
+const db = require("./config/db")
+
 //2. Settings
     //2.0 Session
     app.use(session({
@@ -61,7 +63,7 @@ const Categoria = mongoose.model("categorias")
     //2.3 Mongoose
     //coming soon...
     mongoose.Promise = global.Promise;
-    mongoose.connect("mongodb://localhost/blogapp").then(() => {
+    mongoose.connect(db.mongoURI).then(() => {
         console.log("Conectado ao mongo!")
     }).catch((err) => {
         console.log("Erro ao se conectar: "+err)
@@ -146,7 +148,9 @@ const Categoria = mongoose.model("categorias")
     app.use("/usuarios", usuarios)
 
 //4. Others
-const PORT = 8081
+//local port - 8081
+//process.env.PORT - porta ambiente do HEROKU
+const PORT = process.env.PORT || 8081
 app.listen(PORT,()=>{
     console.log("Server is running!")
 })

@@ -1,0 +1,5 @@
+npm init - gera package.json do app
+
+inserir em scripts fo package.json: "start": "node app.js"
+
+npm start
