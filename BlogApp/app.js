@@ -45,6 +45,8 @@ const Categoria = mongoose.model("categorias")
         res.locals.success_msg = req.flash("success_msg")
         res.locals.error_msg = req.flash("error_msg")
         res.locals.error = req.flash("error")
+        //passport implementa user com dados do usuario autenticado
+        res.locals.user = req.user || null
         next()
     })
 
