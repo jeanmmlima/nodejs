@@ -7,6 +7,10 @@ const app = express()
 const admin = require('./routes/admin')
 const usuarios = require('./routes/usuario')
 
+const passport = require("passport")
+require("./config/auth")(passport)
+
+
 //module path para trablhar com diretorios
 const path = require("path")
 const mongoose = require('mongoose')
@@ -28,6 +32,9 @@ const Categoria = mongoose.model("categorias")
         saveUninitialized: true
 
     }))
+    app.use(passport.initialize())
+    app.use(passport.session())
+
     app.use(flash())
 
     //2.0.1 Middleware para trabalhar com sessoes
@@ -37,6 +44,7 @@ const Categoria = mongoose.model("categorias")
         //flash - sessao temporaria
         res.locals.success_msg = req.flash("success_msg")
         res.locals.error_msg = req.flash("error_msg")
+        res.locals.error = req.flash("error")
         next()
     })
 

@@ -9,3 +9,9 @@ npm install --save mangoose
 npm install --save express-session
 npm install --save connect-flash
 npm install --save bcryptjs
+
+for authentication
+npm install --save passport
+
+modelo de autenticacao
+npm install --save passport-local

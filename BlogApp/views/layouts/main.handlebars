@@ -16,6 +16,10 @@
     <!-- conteúdo da página centralizado e com borda (4 unidades - mt-4) a partir do navbar-->
 
     <div class="container mt-4">
+        {{#if error}}
+            <div class="alert alert-danger">{{error}}</div>
+        {{else}}
+        {{/if}}
         {{>_msg}}
         {{{body}}}
     </div>
